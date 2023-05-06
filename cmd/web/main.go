@@ -49,6 +49,7 @@ func main() {
 	formDecoder := form.NewDecoder()
 
 	sessionManager := scs.New()
+	// sessionManager.Cookie.SameSite = http.SameSiteStrictMode
 	sessionManager.Store = mysqlstore.New(db)
 	sessionManager.Lifetime = 12 * time.Hour
 
