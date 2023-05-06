@@ -199,11 +199,14 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Add the ID of the current user to the session, so that they are now
-	// 'logged in'.
 	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
 
-	// Redirect the user to the create snippet page.
+	path := app.sessionManager.PopString(r.Context(), "redirectPathAfterLogin")
+	if path != "" {
+		http.Redirect(w, r, path, http.StatusSeeOther)
+		return
+	}
+
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }
 
